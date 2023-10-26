@@ -7,6 +7,8 @@ use App\DTO\Support\{
     UpdateSupportDTO
 };
 use App\Models\Support;
+use App\Repositories\PaginationInterface;
+use App\Repositories\PaginationPresenter;
 use stdClass;
 
 class SupportEloquentORM implements SupportRepositoryInterface
@@ -25,7 +27,9 @@ class SupportEloquentORM implements SupportRepositoryInterface
                         }
                     })
                     ->paginate($totalPerPage,['*'],'page',$page);
-        dd($result->toArray());
+
+        dd((new PaginationPresenter($result))->items());
+        return new PaginationPresenter($result);
     }
 
     public function getAll(string $filter = null): array
@@ -41,6 +45,7 @@ class SupportEloquentORM implements SupportRepositoryInterface
                     ->get()
                     ->toArray();
     }
+
     public function findOne(string $id): stdClass | null
     {
         $support = $this->model->find($id);
@@ -49,10 +54,12 @@ class SupportEloquentORM implements SupportRepositoryInterface
         }
         return (Object) $support->toArray();
     }
+
     public function delete(string $id):void
     {
         $this->model->findOrFail($id)->delete();
     }
+
     public function new(CreateSupportDTO $dto): stdClass
     {
         $support = $this->model->create(
@@ -61,6 +68,7 @@ class SupportEloquentORM implements SupportRepositoryInterface
 
         return (Object) $support->toArray();
     }
+
     public function update(UpdateSupportDTO $dto): stdClass | null
     {
         $support = $this->model->find($dto->id);

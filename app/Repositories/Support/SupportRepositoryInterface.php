@@ -6,6 +6,7 @@ use App\DTO\Support\{
     CreateSupportDTO,
     UpdateSupportDTO
 };
+use App\Repositories\PaginationInterface;
 use stdClass;
 
 interface SupportRepositoryInterface
