@@ -21,13 +21,6 @@
                 <td>
                     <a href="{{ route('supports.edit',$support['id'])}}"> Editar </a>
                 </td>
-                <td>
-                    <form action="{{route('supports.destroy',$support['id'])}}" method="POST">
-                        @method('DELETE');
-                        @csrf()
-                        <button type="submit">Deletar</button>
-                    </form>
-                </td>
             </tr>
         @endforeach
     </tbody>
