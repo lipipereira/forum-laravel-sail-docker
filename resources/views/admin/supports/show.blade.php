@@ -6,7 +6,7 @@
     <li>Descrição: {{$support->body}}</li>
 </ul>
 
-<form action="{{route('supports.destroy',$support->id)}}" method="POST">
-    @method('DELETE');
+<form action="{{route('supports.destroy',$support->id)}}">
+    @method('DELETE')
     <x-delete/>
 </form>
