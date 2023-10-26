@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Support;
 
-use App\DTO\CreateSupportDTO;
-use App\DTO\UpdateSupportDTO;
+use App\DTO\Support\{
+    CreateSupportDTO,
+    UpdateSupportDTO
+};
 use App\Models\Support;
-use App\Repositories\SupportRepositoryInterface;
 use stdClass;
 
 class SupportEloquentORM implements SupportRepositoryInterface
@@ -13,6 +14,19 @@ class SupportEloquentORM implements SupportRepositoryInterface
     public function __construct(
         protected Support $model
     ){}
+
+    public function paginate(int $page = 1, int $totalPerPage = 15, ?string $filter = null): PaginationInterface
+    {
+        $result = $this->model
+                    ->where(function($query) use ($filter){
+                        if ($filter){
+                            $query->where('subject', $filter);
+                            $query->orWhere('body','like',"%{$filter}%");
+                        }
+                    })
+                    ->paginate($totalPerPage,['*'],'page',$page);
+        dd($result->toArray());
+    }
 
     public function getAll(string $filter = null): array
     {
