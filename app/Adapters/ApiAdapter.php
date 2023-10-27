@@ -2,6 +2,7 @@
 
 namespace App\Adapters;
 
+use App\Http\Resources\DefaultResource;
 use App\Repositories\PaginationInterface;
 
 class ApiAdapter
@@ -9,17 +10,17 @@ class ApiAdapter
     public static function toJson(
         PaginationInterface $data,
     ) {
-        // return DefaultResource::collection($supports->items())
-        //                         ->additional([
-        //                             'meta' => [
-        //                                 'total' => $supports->total(),
-        //                                 'is_first_page' => $supports->isFirstPage(),
-        //                                 'is_last_page' => $supports->isLastPage(),
-        //                                 'current_page' => $supports->currentPage(),
-        //                                 'next_page' => $supports->getNumberNextPage(),
-        //                                 'previous_page' =>$supports->getNumberPreviousPage()
-        //                             ]
-        //                         ]);
+        return DefaultResource::collection($data->items())
+                                ->additional([
+                                    'meta' => [
+                                        'total' => $data->total(),
+                                        'is_first_page' => $data->isFirstPage(),
+                                        'is_last_page' => $data->isLastPage(),
+                                        'current_page' => $data->currentPage(),
+                                        'next_page' => $data->getNumberNextPage(),
+                                        'previous_page' =>$data->getNumberPreviousPage()
+                                    ]
+                                ]);
     }
 
 }
